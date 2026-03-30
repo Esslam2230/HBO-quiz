@@ -90,14 +90,59 @@ if (page === 'quiz') {
   renderQuestion();
 }
 
-const contactForm = document.querySelector('.contact-form');
 
-if (contactForm) {
-  contactForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const note = contactForm.querySelector('.form-note');
-    if (note) {
-      note.textContent = 'Bedankt! Dit is nog steeds een demo, maar je bericht ziet er goed uit.';
-    }
+const cards = document.querySelectorAll(".card");
+
+let order = [0,1,2,3,4];
+
+function updatePositions() {
+  cards.forEach((card, i) => {
+    card.classList.remove("pos-0","pos-1","pos-2","pos-3","pos-4");
+    card.classList.add("pos-" + order[i]);
   });
 }
+
+function rotateCards() {
+  order.push(order.shift()); // draai array
+  updatePositions();
+}
+
+updatePositions();
+setInterval(rotateCards, 2500);
+
+
+
+const text = "Kies een ICT-richting die bij jouw energie past.";
+const el = document.querySelector(".title");
+
+let i = 0;
+let isDeleting = false;
+
+function typeLoop() {
+  if (!isDeleting) {
+    // typen
+    el.innerHTML = text.substring(0, i + 1);
+    i++;
+
+    if (i === text.length) {
+      isDeleting = true;
+      setTimeout(typeLoop, 2000); // wacht even
+      return;
+    }
+  } else {
+    // verwijderen
+    el.innerHTML = text.substring(0, i - 1);
+    i--;
+
+    if (i === 0) {
+      isDeleting = false;
+    }
+  }
+
+  setTimeout(typeLoop, isDeleting ? 20 : 40);
+}
+
+typeLoop();
+
+
+
